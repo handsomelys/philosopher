@@ -1,0 +1,88 @@
+package main;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
+public class Philosopher extends Thread {
+	private String name;
+	private Chopsticks chopsticks;
+	private boolean ifeat = false;
+	private boolean ifthink = false;
+	public String status;
+	public JTextArea jta;
+	public JLabel status_pic = new JLabel();;
+	public Philosopher(String name,Chopsticks chopsticks) {
+		super(name);
+		this.name = name;
+		this.chopsticks = chopsticks;
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			think();
+			chopsticks.waitChopsticks();
+			eat();
+			chopsticks.signalChopsticks();
+		}
+	}
+	public void eat() {
+		System.out.println("Eating: "+name);
+		this.status = "Eating: "+name+"\n";
+		this.jta.append(status);
+		this.status_pic = new JLabel();
+		
+		this.setIfeat(true);
+		try {
+			sleep(1000);
+		}	catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.setIfeat(false);
+	}
+	public void think() {
+		System.out.println("Thingking: "+name);
+		this.status = "Thingking: "+name+"\n";
+		this.jta.append(status);
+		this.setIfthink(true);
+		try {
+			sleep(1000);
+		}	catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.setIfthink(false);
+	}
+
+	public boolean isIfeat() {
+		return ifeat;
+	}
+
+	public void setIfeat(boolean ifeat) {
+		this.ifeat = ifeat;
+	}
+
+	public boolean isIfthink() {
+		return ifthink;
+	}
+
+	public void setIfthink(boolean ifthink) {
+		this.ifthink = ifthink;
+	}
+
+	public String getpName() {
+		return name;
+	}
+
+	public void setpName(String name) {
+		this.name = name;
+	}
+
+	public JTextArea getJta() {
+		return jta;
+	}
+
+	public void setJta(JTextArea jta) {
+		this.jta = jta;
+	}
+	
+	
+}

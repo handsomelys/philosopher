@@ -1,0 +1,20 @@
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Chopsticks chopsticks = new Chopsticks();
+		Philosopher philosopher1 = new Philosopher("0",chopsticks);
+		Philosopher philosopher2 = new Philosopher("1",chopsticks);
+		Philosopher philosopher3 = new Philosopher("2",chopsticks);
+		Philosopher philosopher4 = new Philosopher("3",chopsticks);
+		Philosopher philosopher5 = new Philosopher("4",chopsticks);
+		
+		philosopher1.start();
+		philosopher2.start();
+		philosopher3.start();
+		philosopher4.start();
+		philosopher5.start();
+	}
+
+}

@@ -1,0 +1,138 @@
+package main;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub	
+		ArrayList<Philosopher> philosophers = new ArrayList<Philosopher>();
+		ArrayList<JLabel> pictures = new ArrayList<JLabel>();
+		JButton start = new JButton("¿ªÊ¼");
+		JButton end = new JButton("½áÊø");
+		JPanel buttonpane = new JPanel();
+		JPanel picPane = new JPanel();
+		
+		JFrame frame = new JFrame();
+		JTextArea jta = new JTextArea();
+		JScrollPane jsp1 = new JScrollPane(jta);
+		
+		jta.setLineWrap(true);
+		frame.add(buttonpane,BorderLayout.NORTH);
+		buttonpane.add(start);
+		buttonpane.add(end);
+		
+		Chopsticks chopsticks = new Chopsticks();
+		Philosopher philosopher1 = new Philosopher("0",chopsticks);
+		Philosopher philosopher2 = new Philosopher("1",chopsticks);
+		Philosopher philosopher3 = new Philosopher("2",chopsticks);
+		Philosopher philosopher4 = new Philosopher("3",chopsticks);
+		Philosopher philosopher5 = new Philosopher("4",chopsticks);
+		philosophers.add(philosopher1);
+		philosophers.add(philosopher2);
+		philosophers.add(philosopher3);
+		philosophers.add(philosopher4);
+		philosophers.add(philosopher5);
+		for(Philosopher ph:philosophers) {
+			ph.setJta(jta);
+		}
+		JLabel pic1 = new JLabel();
+		JLabel pic2 = new JLabel();
+		JLabel pic3 = new JLabel();
+		JLabel pic4 = new JLabel();
+		JLabel pic5 = new JLabel();
+		//pictures.add(pic1);pictures.add(pic2);pictures.add(pic3);pictures.add(pic4);pictures.add(pic5);
+		
+		start.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for(Philosopher ph:philosophers) {
+					ph.start();
+				}
+			}
+			
+		});
+		end.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}			
+		});
+		Dimension size = jta.getPreferredSize();
+		jsp1.setBounds(300, 200, size.width, size.height);
+		frame.add(jsp1,BorderLayout.WEST);
+		frame.setSize(500,500);
+		frame.setVisible(true);
+		
+		
+		
+		//run(text1,text2,text3,text4,text5,philosopher1,philosopher2,philosopher3,philosopher4,philosopher5,jta);
+		
+	}
+/*
+	public static void run(String text1,String text2,String text3,String text4,String text5,Philosopher philosopher1,Philosopher philosopher2,Philosopher philosopher3,Philosopher philosopher4,Philosopher philosopher5,JTextArea jta) {
+		while(true) {			
+			if(philosopher1.isIfeat()) {
+				String name = philosopher1.getpName() + "is eating";
+				text1 = name;
+			}
+			else if(philosopher1.isIfthink()) {
+				String name = philosopher1.getpName() + "is thingking";
+				text1 = name;
+			}
+			if(philosopher2.isIfeat()) {
+				String name = philosopher1.getpName();
+				text2 = name;
+			}
+			else if(philosopher2.isIfthink()) {
+				String name = philosopher1.getpName() + "is thingking";
+				text2 = name;
+			}
+			if(philosopher3.isIfeat()) {
+				String name = philosopher1.getpName();
+				text3 = name;
+			}
+			else if(philosopher3.isIfthink()) {
+				String name = philosopher1.getpName() + "is thingking";
+				text3 = name;
+			}
+			if(philosopher4.isIfeat()) {
+				String name = philosopher1.getpName();
+				text4 = name;
+			}
+			else if(philosopher4.isIfthink()) {
+				String name = philosopher1.getpName() + "is thingking";
+				text4 = name;
+			}
+			if(philosopher5.isIfeat()) {
+				String name = philosopher1.getpName();
+				text5 = name;
+			}
+			else if(philosopher5.isIfthink()) {
+				String name = philosopher1.getpName() + "is thingking";
+				text5 = name;
+			}
+			jta.append(text1);
+			jta.append(text2);
+			jta.append(text3);
+			jta.append(text4);
+			jta.append(text5);
+		}
+		
+	}
+	*/
+}
+

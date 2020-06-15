@@ -1,0 +1,42 @@
+
+public class Philosopher extends Thread {
+	private String name;
+	private Chopsticks chopsticks;
+	private boolean ifeat = false;
+	private boolean ifthink = false;
+	public Philosopher(String name,Chopsticks chopsticks) {
+		super(name);
+		this.name = name;
+		this.chopsticks = chopsticks;
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			think();
+			chopsticks.waitChopsticks();
+			eat();
+			chopsticks.signalChopsticks();
+		}
+	}
+	public void eat() {
+		System.out.println("Eating: "+name);
+		this.ifeat = true;
+		try {
+			sleep(1000);
+		}	catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.ifeat = false;
+	}
+	public void think() {
+		System.out.println("Thingking: "+name);
+		this.ifthink = true;
+		try {
+			sleep(1000);
+		}	catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.ifeat = false;
+	}
+}

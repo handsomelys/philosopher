@@ -1,0 +1,54 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub	
+		JButton start = new JButton("¿ªÊ¼");
+		JButton pause = new JButton("ÔÝÍ£");
+		JPanel panel = new JPanel();
+		JFrame frame = new JFrame();
+		frame.add(panel);
+		panel.add(start);
+		panel.add(pause);
+		
+		Chopsticks chopsticks = new Chopsticks();
+		Philosopher philosopher1 = new Philosopher("0",chopsticks);
+		Philosopher philosopher2 = new Philosopher("1",chopsticks);
+		Philosopher philosopher3 = new Philosopher("2",chopsticks);
+		Philosopher philosopher4 = new Philosopher("3",chopsticks);
+		Philosopher philosopher5 = new Philosopher("4",chopsticks);
+
+		start.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				philosopher1.start();
+				philosopher2.start();
+				philosopher3.start();
+				philosopher4.start();
+				philosopher5.start();			}
+			
+		});
+		pause.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Thread.sleep(1000*100);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+}
+
+	
+}
