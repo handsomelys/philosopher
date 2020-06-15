@@ -19,19 +19,19 @@ public class Chopsticks {
 			//this.whichWaiting[i]=true;
 			while(true)	{
 				if(isUsed[i]) {
-					temp = i+"号哲学家正在等待"+i+"号筷子吃饭。\n";
-					this.setStatus(temp);
+
 				}
 				else if(!isUsed[i]) {
 					if(isUsed[(i+1)%5]) {
-						temp = i+"号哲学家正在等待"+(i+1)%5+"号筷子吃饭。\n";
-						this.setStatus(temp);
+
 					}
 				else if(!isUsed[(i+1)%5]) {
 						break;
 					}
 				}
 				try {
+					temp = i+"is waiting\n"+"\n";
+					this.setStatus(temp);
 					this.setWaiting(true);
 					this.whichWaiting[i]=true;
 					wait();
@@ -41,22 +41,19 @@ public class Chopsticks {
 			}
 			isUsed[i] = true;
 			isUsed[(i+1)%5] = true;
-			temp = i+" 号哲学家拿起了"+ i +"号筷子和" +(i+1)%5+"号筷子"+"\n";
-			this.setStatus(temp);
+
 			this.whichWaiting[i]=false;
 			this.setWaiting(false);
 		}
 		else {
-			//this.whichWaiting[i]=true;
+
 			while (true){
 				if(isUsed[(i+1)%5]) {
-					temp = i+"号哲学家正在等待"+(i+1)%5+"号筷子吃饭。\n";
-					this.setStatus(temp);
+
 				}
 			else if(!isUsed[(i+1)%5]) {
 				if(isUsed[i]) {
-					temp = i+"号哲学家正在等待"+i+"号筷子吃饭。\n";
-					this.setStatus(temp);
+
 				}
 			else if(!isUsed[i])
 						break;
@@ -64,6 +61,8 @@ public class Chopsticks {
 				try {
 					this.whichWaiting[i]=true;
 					this.setWaiting(true);
+					temp = i+" is waiting\n"+"\n";
+					this.setStatus(temp);
 					wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -73,8 +72,6 @@ public class Chopsticks {
 			isUsed[i] = true;
 			this.setWaiting(false);
 			this.whichWaiting[i]=false;
-			temp = i+" 号哲学家拿起了"+ (i+1)%5 +"号筷子和" +i+"号筷子\n";
-			this.setStatus(temp);
 			
 		}
 	}

@@ -22,6 +22,7 @@ public class Philosopher extends Thread {
 		this.name = name;
 		this.chopsticks = chopsticks;
 		this.status_pic = status_pic;
+		img = new ImageIcon("./src/pictures/thinking.png");
 		this.status_pic.setIcon(img);
 		this.number = Integer.parseInt(name);
 	}
@@ -41,7 +42,7 @@ public class Philosopher extends Thread {
 	public void eat() {
 		//System.out.println("Eating: "+name);
 		
-		this.status = name+" 号哲学家吃饭 : "+"\n"+"\n";
+		this.status = name+" is eating : "+"\n"+"\n";
 		this.jta.append(status);
 		jta.setSelectionStart(jta.getText().length());
 		//this.img = new ImageIcon("./src/pictures/eating.png");
@@ -59,7 +60,7 @@ public class Philosopher extends Thread {
 	}
 	public void think() {
 		//System.out.println("Thingking: "+name);
-		this.status = name+" 号哲学家思考: "+"\n"+"\n";
+		this.status = name+" is thinking: "+"\n"+"\n";
 		this.jta.append(status);
 		jta.setSelectionStart(jta.getText().length());
 		//this.img = new ImageIcon("./src/pictures/thinking.png");
@@ -75,38 +76,21 @@ public class Philosopher extends Thread {
 		
 		this.setIfthink(false);
 	}
-	
-	public void waiting() {
-		if(chopsticks.getWhichWaiting()[number]==true) {
-			this.img = new ImageIcon("./src/pictures/waiting.png");
-			this.status_pic.setIcon(img);	
-		}
-		else {
-			if(this.isIfeat()) {
-				this.img = new ImageIcon("./src/pictures/eating.png");
-				this.status_pic.setIcon(img);
-			}
-			if(this.isIfthink()) {
-				this.img = new ImageIcon("./src/pictures/thinking.png");
-				this.status_pic.setIcon(img);
-			}
-		}
-	}
+
 	public void statusForPhilosophers() {
-		if(chopsticks.getWhichWaiting()[number]==true) {
+		while(chopsticks.getWhichWaiting()[number]==true) {
 			this.img = new ImageIcon("./src/pictures/waiting.png");
 			this.status_pic.setIcon(img);	
 		}
-		else {
-			if(this.isIfeat()) {
-				this.img = new ImageIcon("./src/pictures/eating.png");
-				this.status_pic.setIcon(img);
-			}
-			if(this.isIfthink()) {
-				this.img = new ImageIcon("./src/pictures/thinking.png");
-				this.status_pic.setIcon(img);
-			}
+		if(this.isIfeat()) {
+			this.img = new ImageIcon("./src/pictures/eating.png");
+			this.status_pic.setIcon(img);
 		}
+		if(this.isIfthink()) {
+			this.img = new ImageIcon("./src/pictures/thinking.png");
+			this.status_pic.setIcon(img);
+		}
+		
 	}
 	public boolean isIfeat() {
 		return ifeat;

@@ -1,0 +1,62 @@
+package main;
+
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+public class Chopsticks_Monitor implements Runnable{
+	Philosopher philosopher;
+	ArrayList<JLabel> pic_for_chopsticks;
+	Chopsticks_Monitor(Philosopher philosopher,ArrayList<JLabel> pic_for_chopsticks){
+		this.philosopher=philosopher;
+		this.pic_for_chopsticks=pic_for_chopsticks;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		monitor_for_chopsticks(philosopher,pic_for_chopsticks);
+	}
+	public static void monitor_for_chopsticks(Philosopher philosopher,ArrayList<JLabel> pic_for_chopsticks) {
+		ImageIcon img;
+		if(philosopher.getChopsticks().getIsUsed()[0]==false) {
+			img = new ImageIcon("./src/pictures/kz1.png");
+			pic_for_chopsticks.get(0).setIcon(img);
+			pic_for_chopsticks.get(0).setBounds(170, 100, 30, 30);
+		}
+		else
+			pic_for_chopsticks.get(0).setIcon(null);
+		if(philosopher.getChopsticks().getIsUsed()[1]==false) {
+			img = new ImageIcon("./src/pictures/kz25.png");
+			pic_for_chopsticks.get(1).setIcon(img);
+			//kz2.setBounds(50, 155, 30, 30);
+			pic_for_chopsticks.get(1).setBounds(275, 155, 30, 30);
+		}	
+		else
+			pic_for_chopsticks.get(1).setIcon(null);
+		if(philosopher.getChopsticks().getIsUsed()[2]==false) {
+			img = new ImageIcon("./src/pictures/kz3.png");
+			pic_for_chopsticks.get(2).setIcon(img);
+			//kz3.setBounds(255, 155, 30, 30);
+			pic_for_chopsticks.get(2).setBounds(245, 270, 30, 30);
+		}
+		else
+			pic_for_chopsticks.get(2).setIcon(null);
+		if(philosopher.getChopsticks().getIsUsed()[3]==false) {
+			img = new ImageIcon("./src/pictures/kz4.png");
+			pic_for_chopsticks.get(3).setIcon(img);
+			//kz4.setBounds(75, 270, 30, 30);
+			pic_for_chopsticks.get(3).setBounds(95, 270, 30, 30);
+		}
+		else
+			pic_for_chopsticks.get(3).setIcon(null);
+		if(philosopher.getChopsticks().getIsUsed()[4]==false) {
+			img = new ImageIcon("./src/pictures/kz25.png");
+			pic_for_chopsticks.get(4).setIcon(img);
+			//kz5.setBounds(225, 270, 30, 30);
+			pic_for_chopsticks.get(4).setBounds(20, 150, 50, 50);
+		}	
+		else
+			pic_for_chopsticks.get(4).setIcon(null);
+	}
+}

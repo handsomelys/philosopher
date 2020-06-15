@@ -24,8 +24,8 @@ public class Main {
 		// TODO Auto-generated method stub	
 		ArrayList<Philosopher> philosophers = new ArrayList<Philosopher>();
 		ArrayList<JLabel> pictures = new ArrayList<JLabel>();
-		JButton start = new JButton("开始");
-		JButton end = new JButton("结束");
+		JButton start = new JButton("start");
+		JButton end = new JButton("end");
 		JPanel buttonpane = new JPanel();
 		JPanel picPane = new JPanel();
 		JFrame speedSelect = new JFrame("select speed!");
@@ -80,9 +80,9 @@ public class Main {
 		}
 		speedSelect.setSize(100,100);
 		speedSelect.setLocationRelativeTo(null);
-		JButton fast = new JButton("快");
-		JButton mid = new JButton("中");
-		JButton slow = new JButton("慢");
+		JButton fast = new JButton("fast");
+		JButton mid = new JButton("middle");
+		JButton slow = new JButton("slow");
 		speedSelect.add(speedPanel);
 		speedPanel.add(fast,FlowLayout.LEFT);
 		speedPanel.add(mid,FlowLayout.CENTER);
@@ -133,6 +133,7 @@ public class Main {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for(Philosopher ph:philosophers) {
+					
 					ph.start();
 				}
 			}
@@ -157,7 +158,10 @@ public class Main {
 		picPane.setLayout(null);
 		picPane.add(pic1);picPane.add(pic2);picPane.add(pic3);picPane.add(pic4);picPane.add(pic5);picPane.add(desk);
 		picPane.add(kz1);picPane.add(kz2);picPane.add(kz3);picPane.add(kz4);picPane.add(kz5);
-		
+		for(JLabel picture:pictures) {
+			img = new ImageIcon("./src/pictures/thinking.png");
+			picture.setIcon(img);
+		}
 		pic1.setBounds(170, 50, 50, 50);
 		pic5.setBounds(20, 150, 50, 50);
 		pic2.setBounds(320, 150, 50, 50);
@@ -222,4 +226,3 @@ public class Main {
 		
 	}
 }
-

@@ -1,0 +1,150 @@
+package main;
+import java.util.Random;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+public class Philosopher extends Thread {
+	private String name;
+	private Chopsticks chopsticks;
+	private boolean ifeat = false;
+	private boolean ifthink = false;
+	private int speed;
+	private int number;
+	public String status;
+	public JTextArea jta;
+	
+	private JLabel status_pic = new JLabel();
+	public Random random = new Random();
+	public ImageIcon img = new ImageIcon("./src/pictures/thinking.png");
+	public Philosopher(String name,Chopsticks chopsticks,JLabel status_pic) {
+		super(name);
+		this.name = name;
+		this.chopsticks = chopsticks;
+		this.status_pic = status_pic;
+		this.status_pic.setIcon(img);
+		this.number = Integer.parseInt(name);
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			think();
+
+			chopsticks.waitChopsticks();
+			
+			eat();
+
+			chopsticks.signalChopsticks();
+		}
+	}
+	public void eat() {
+		//System.out.println("Eating: "+name);
+		
+		this.status = name+" 号哲学家吃饭 : "+"\n"+"\n";
+		this.jta.append(status);
+		jta.setSelectionStart(jta.getText().length());
+		//this.img = new ImageIcon("./src/pictures/eating.png");
+		//this.status_pic.setIcon(img);	
+		this.setIfeat(true);
+		
+		try {
+			sleep(speed*random.nextInt(2));
+			//sleep(new Random().nextInt(2)*1000);
+		}	catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		this.setIfeat(false);
+	}
+	public void think() {
+		//System.out.println("Thingking: "+name);
+		this.status = name+" 号哲学家思考: "+"\n"+"\n";
+		this.jta.append(status);
+		jta.setSelectionStart(jta.getText().length());
+		//this.img = new ImageIcon("./src/pictures/thinking.png");
+		//this.status_pic.setIcon(img);
+		this.setIfthink(true);
+		
+		try {
+			sleep(speed*random.nextInt(2));
+			//sleep(new Random().nextInt(1)*1000);
+		}	catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		this.setIfthink(false);
+	}
+
+	public void statusForPhilosophers() {
+		if(chopsticks.getWhichWaiting()[number]==true) {
+			this.img = new ImageIcon("./src/pictures/waiting.png");
+			this.status_pic.setIcon(img);	
+		}
+		else if(chopsticks.getWhichWaiting()[number]==false){
+				this.img = new ImageIcon("./src/pictures/eating.png");
+				this.status_pic.setIcon(img);
+		}
+		if(this.isIfeat()) {
+			this.img = new ImageIcon("./src/pictures/eating.png");
+			this.status_pic.setIcon(img);
+		}
+		if(this.isIfthink()) {
+			this.img = new ImageIcon("./src/pictures/thinking.png");
+			this.status_pic.setIcon(img);
+		}
+	}
+	public boolean isIfeat() {
+		return ifeat;
+	}
+
+	public void setIfeat(boolean ifeat) {
+		this.ifeat = ifeat;
+	}
+
+	public boolean isIfthink() {
+		return ifthink;
+	}
+
+	public void setIfthink(boolean ifthink) {
+		this.ifthink = ifthink;
+	}
+
+	public String getpName() {
+		return name;
+	}
+
+	public void setpName(String name) {
+		this.name = name;
+	}
+
+	public JTextArea getJta() {
+		return jta;
+	}
+
+	public void setJta(JTextArea jta) {
+		this.jta = jta;
+	}
+
+	public JLabel getStatus_pic() {
+		return status_pic;
+	}
+
+	public void setStatus_pic(JLabel status_pic) {
+		this.status_pic = status_pic;
+	}
+
+	public Chopsticks getChopsticks() {
+		return chopsticks;
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
+	
+}

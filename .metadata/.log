@@ -454,3 +454,9 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2020-06-15 10:05:49.479
 !MESSAGE No repository found at http://Location:%20http://download.eclipse.org/efxclipse/updates-released/2.3.0/site.
+
+!ENTRY org.eclipse.ui 2 2 2020-06-15 15:00:55.681
+!MESSAGE Invalid preference category path: com.android.ide.eclipse.preferences.main (bundle: com.android.ide.eclipse.ddms, page: com.android.ide.eclipse.ddms.preferences.PreferencePage)
+
+!ENTRY org.eclipse.ui 2 2 2020-06-15 15:00:55.731
+!MESSAGE Invalid preference category path: com.android.ide.eclipse.preferences.main (bundle: com.android.ide.eclipse.ddms, page: com.android.ide.eclipse.ddms.preferences.LogCatPreferencePage)
