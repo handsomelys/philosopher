@@ -1,91 +1,38 @@
 package main;
 
 public class Chopsticks {
-	private boolean[] isUsed = {false,false,false,false,false};
-	private String status;
-	private boolean waiting = false;
-	private int name;
-	private int one;
-	private	boolean[] whichWaiting = {false,false,false,false,false};
-	public synchronized void waitChopsticks() {
-		
-		String name = Thread.currentThread().getName();
-		int i = Integer.parseInt(name);
-		this.setName(i);
-		
-		String temp;
-		
-		if(i%2==1) {
-			//this.whichWaiting[i]=true;
-			while(true)	{
-				if(isUsed[i]) {
 
-				}
-				else if(!isUsed[i]) {
-					if(isUsed[(i+1)%5]) {
-
-					}
-				else if(!isUsed[(i+1)%5]) {
-						break;
-					}
-				}
-				try {
-					temp = i+"is waiting\n"+"\n";
-					this.setStatus(temp);
-					this.setWaiting(true);
-					this.whichWaiting[i]=true;
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			isUsed[i] = true;
-			isUsed[(i+1)%5] = true;
-
-			this.whichWaiting[i]=false;
-			this.setWaiting(false);
-		}
-		else {
-
-			while (true){
-				if(isUsed[(i+1)%5]) {
-
-				}
-			else if(!isUsed[(i+1)%5]) {
-				if(isUsed[i]) {
-
-				}
-			else if(!isUsed[i])
-						break;
-				}
-				try {
-					this.whichWaiting[i]=true;
-					this.setWaiting(true);
-					temp = i+" is waiting\n"+"\n";
-					this.setStatus(temp);
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			isUsed[(i+1)%5] = true;
-			isUsed[i] = true;
-			this.setWaiting(false);
-			this.whichWaiting[i]=false;
-			
-		}
+	private boolean avilable;
+	private Philosopher taker;
+	private Philosopher owner;
+	private Dining_Table table;
+	public Chopsticks() {
+		avilable = true;
 	}
-
-	public synchronized void signalChopsticks() {
-		String name = Thread.currentThread().getName();
-		int i = Integer.parseInt(name);
-		isUsed[i] = false;
-		isUsed[(i+1)%5] = false;
+	
+	public synchronized void take(Philosopher taker) {
+		this.setTaker(taker);
+		while(!avilable) {
+			try {
+				taker.setStatus(2);
+				System.out.println("philosopher "+ taker.getId_for_philosopher()+" is waiting");
+				wait();
+			}	catch(InterruptedException e) {
+				
+			}
+		}
+		avilable = false;
+		this.setOwner(taker);
+		table.repaint();
+	}
+	
+	public synchronized void putdown() {
+		avilable = true;
+		this.setOwner(null);
 		notifyAll();
+		table.repaint();
 	}
-	public boolean[] getIsUsed() {
-		return isUsed;
-	}
+
 	public static int getChopsticksIndex(boolean[] array,boolean value) {
 		for(int i=0;i<array.length;i++) {
 			if(array[i]==value)
@@ -93,57 +40,30 @@ public class Chopsticks {
 		}
 		return -1;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public boolean isWaiting() {
-		return waiting;
-	}
-	public void setWaiting(boolean waiting) {
-		this.waiting = waiting;
-	}
-	public int getName() {
-		return name;
-	}
-	public void setName(int name) {
-		this.name = name;
-	}
-	public int getOne() {
-		return one;
-	}
-	public void setOne(int which) {
-		this.one = which;
-	}
-	public int whichIsWating() {
-		while(true) {
-			System.out.println(this.getName());
-			System.out.println(this.isWaiting());
-			if(this.getName()==0&&this.isWaiting()) {
-				return 1;
-			}
-			if(this.getName()==1&&this.isWaiting()) {
-				return 2;
-			}
-			if(this.getName()==2&&this.isWaiting()) {
-				return 3;
-			}
-			if(this.getName()==3&&this.isWaiting()) {
-				return 4;
-			}
-			if(this.getName()==4&&this.isWaiting()) {
-				return 5;
-			}
-		}
+	public Philosopher getTaker() {
+		return taker;
 	}
 
-	public boolean[] getWhichWaiting() {
-		return whichWaiting;
+	public void setTaker(Philosopher taker) {
+		this.taker = taker;
 	}
 
-	public void setWhichWaiting(boolean[] whichWaiting) {
-		this.whichWaiting = whichWaiting;
+	public Philosopher getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Philosopher owner) {
+		this.owner = owner;
+	}
+	public int getOwner_ID() {
+		return getOwner().getId_for_philosopher();
+	}
+
+	public Dining_Table getTable() {
+		return table;
+	}
+
+	public void setTable(Dining_Table table) {
+		this.table = table;
 	}
 }

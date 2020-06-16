@@ -6,108 +6,94 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 public class Philosopher extends Thread {
 	private String name;
-	private Chopsticks chopsticks;
-	private boolean ifeat = false;
-	private boolean ifthink = false;
 	private int speed;
 	private int number;
 	public String status;
 	public JTextArea jta;
-	
-	private JLabel status_pic = new JLabel();
-	public Random random = new Random();
-	public ImageIcon img = new ImageIcon("./src/pictures/thinking.png");
-	public Philosopher(String name,Chopsticks chopsticks,JLabel status_pic) {
-		super(name);
-		this.name = name;
-		this.chopsticks = chopsticks;
-		this.status_pic = status_pic;
-		img = new ImageIcon("./src/pictures/thinking.png");
-		this.status_pic.setIcon(img);
-		this.number = Integer.parseInt(name);
+
+	public static final int EATING = 0;	//吃饭的表情
+	public static final int THINKING = 1;	//思考的表情
+	public static final int WAITING = 2;	//等待阻塞的表情
+	public static final int INIT = 3;	//初始表情
+	private Chopsticks left,right;	//分左右筷子 方便到时做GUI
+	private int id_for_philosopher;	//第几号哲学家
+	private ImageIcon eating,thinking,waiting,init;	//各个状态的表情
+	private ImageIcon current;	//记录当前的表情
+	private Random rand = new Random();	//随机数 吃饭和思考的时候用到
+	private int code;
+	private Room room;
+	public Philosopher(int id_for_philosopher,Chopsticks left,Chopsticks right,Room room) {
+		this.id_for_philosopher = id_for_philosopher;
+		this.left = left;
+		this.right = right;
+		eating = new ImageIcon("./src/pictures/eating.png");
+		thinking = new ImageIcon("./src/pictures/thinking.png");
+		waiting = new ImageIcon("./src/pictures/waiting.png");
+		init = new ImageIcon("./src/pictures/init.png");
+		current = init;	
+		setStatus(Philosopher.INIT);
+		this.room = room;
 	}
 	
+	public void eat() {
+			left.take(Philosopher.this);
+			right.take(Philosopher.this);
+			setStatus(Philosopher.EATING);
+			System.out.println("philosopher "+this.id_for_philosopher + " is eating");
+	}
+	
+	public void think() {
+		left.putdown();
+		right.putdown();
+		setStatus(THINKING);
+		System.out.println("philosopher "+this.id_for_philosopher + " is thinking");
+	}
+	/** 
+	 * @Title: setStatus 
+	 * @Description: TODO 
+	 * @param @param thinking2
+	 * @return void
+	 * @throws 
+	 */  
+	
+	public void setStatus(int status_code) {
+		if(status_code == EATING) {
+			current = eating;
+			code = EATING;
+		}
+		else if(status_code == THINKING) {
+			current = thinking;
+			code = THINKING;
+		}
+		else if(status_code == WAITING) {
+			current = waiting;
+			code = WAITING;
+		}
+		else if(status_code == INIT) {
+			current = init;
+			code = INIT;
+		}
+	}
 	@Override
 	public void run() {
 		while(true) {
-			think();
-
-			chopsticks.waitChopsticks();
-			
+			think();	//思考
+			try {
+				sleep((int)(rand.nextDouble()+0.5)*1000);	//思考的时间是随机的
+			}	catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			room.wait_room();
 			eat();
-
-			chopsticks.signalChopsticks();
+			try {
+				sleep((int)(rand.nextDouble()+0.5)*2000);
+			}	catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			room.signal_room();
 		}
 	}
-	public void eat() {
-		//System.out.println("Eating: "+name);
-		
-		this.status = name+" is eating : "+"\n"+"\n";
-		this.jta.append(status);
-		jta.setSelectionStart(jta.getText().length());
-		//this.img = new ImageIcon("./src/pictures/eating.png");
-		//this.status_pic.setIcon(img);	
-		this.setIfeat(true);
-		
-		try {
-			sleep(speed*random.nextInt(2));
-			//sleep(new Random().nextInt(2)*1000);
-		}	catch(InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		this.setIfeat(false);
-	}
-	public void think() {
-		//System.out.println("Thingking: "+name);
-		this.status = name+" is thinking: "+"\n"+"\n";
-		this.jta.append(status);
-		jta.setSelectionStart(jta.getText().length());
-		//this.img = new ImageIcon("./src/pictures/thinking.png");
-		//this.status_pic.setIcon(img);
-		this.setIfthink(true);
-		
-		try {
-			sleep(speed*random.nextInt(2));
-			//sleep(new Random().nextInt(1)*1000);
-		}	catch(InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		this.setIfthink(false);
-	}
-
-	public void statusForPhilosophers() {
-		while(chopsticks.getWhichWaiting()[number]==true) {
-			this.img = new ImageIcon("./src/pictures/waiting.png");
-			this.status_pic.setIcon(img);	
-		}
-		if(this.isIfeat()) {
-			this.img = new ImageIcon("./src/pictures/eating.png");
-			this.status_pic.setIcon(img);
-		}
-		if(this.isIfthink()) {
-			this.img = new ImageIcon("./src/pictures/thinking.png");
-			this.status_pic.setIcon(img);
-		}
-		
-	}
-	public boolean isIfeat() {
-		return ifeat;
-	}
-
-	public void setIfeat(boolean ifeat) {
-		this.ifeat = ifeat;
-	}
-
-	public boolean isIfthink() {
-		return ifthink;
-	}
-
-	public void setIfthink(boolean ifthink) {
-		this.ifthink = ifthink;
-	}
-
+	
 	public String getpName() {
 		return name;
 	}
@@ -124,24 +110,32 @@ public class Philosopher extends Thread {
 		this.jta = jta;
 	}
 
-	public JLabel getStatus_pic() {
-		return status_pic;
-	}
-
-	public void setStatus_pic(JLabel status_pic) {
-		this.status_pic = status_pic;
-	}
-
-	public Chopsticks getChopsticks() {
-		return chopsticks;
-	}
-
 	public int getSpeed() {
 		return speed;
 	}
 
 	public void setSpeed(int speed) {
 		this.speed = speed;
+	}
+
+	public ImageIcon getCurrent() {
+		return current;
+	}
+
+	public int getId_for_philosopher() {
+		return id_for_philosopher;
+	}
+
+	public void setId_for_philosopher(int id_for_philosopher) {
+		this.id_for_philosopher = id_for_philosopher;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 	
 	
