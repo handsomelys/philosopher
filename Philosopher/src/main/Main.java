@@ -26,14 +26,63 @@ public class Main extends JFrame{
 	private JButton start = new JButton("start");
 	private JButton end = new JButton("end");
 	private JPanel button_panel = new JPanel();
-	
+	private JPanel speed_select_panel;
 	ImageIcon eating,thinking,waiting,init;
+	int speed_level;
+	private int FAST=1200,MIDDLE=2000,SLOW=5000;
 	public void setFrameLocation() {
 		this.setResizable(false);
 		this.setSize(600,650);
+		this.setTitle("Philosopher room solution.");
+	}
+	public void speedSelect(Main frame) {
+		speed_select_panel = new JPanel();
+		JFrame speed_select_frame = new JFrame();
+		JButton fast = new JButton("fast");
+		JButton middle = new JButton("middle");
+		JButton slow = new JButton("slow");
+		speed_select_frame.setVisible(true);
+		speed_select_frame.setResizable(false);
+		speed_select_frame.setLocationRelativeTo(null);
+		speed_select_panel.setSize(200,200);
+		fast.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				speed_level = FAST;
+				speed_select_frame.setVisible(false);
+				frame.setVisible(true);
+			}
+			
+		});
+		middle.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				speed_level = MIDDLE;
+				speed_select_frame.setVisible(false);
+				frame.setVisible(true);
+			}
+			
+		});
+		slow.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				speed_level = SLOW;
+				speed_select_frame.setVisible(false);
+				frame.setVisible(true);
+			}
+			
+		});
+		speed_select_panel.add(fast,FlowLayout.LEFT);
+		speed_select_panel.add(middle,FlowLayout.CENTER);
+		speed_select_panel.add(slow,FlowLayout.RIGHT);
+		speed_select_frame.add(speed_select_panel);
+		speed_select_frame.setSize(300,300);
 	}
 	Main(){
+		this.setVisible(true);
 		/*
 		 * init philosophers && chopsticks && table
 		 */
@@ -41,6 +90,7 @@ public class Main extends JFrame{
 		for(int i=0;i<chops.length;i++) {
 			chops[i] = new Chopsticks();
 		}
+		System.out.println(speed_level);
 		for(int i=0;i<phils.length;i++) {
 			phils[i] = new Philosopher(i,chops[i],chops[(i+1)%5],room);
 		}
@@ -49,7 +99,6 @@ public class Main extends JFrame{
 			chops[i].setTable(table);
 		}
 		table.setBounds(20, 80, 500, 420);
-		this.setVisible(true);
 		
 		/*
 		 * picture for philosophers
@@ -110,6 +159,14 @@ public class Main extends JFrame{
 		
 		setFrameLocation();
 	}
+	/** 
+	 * @Title: speedSelect 
+	 * @Description: TODO 
+	 * @param @param frame
+	 * @return void
+	 * @throws 
+	 */  
+	
 	public static void main(String[] args) {
 		new Main();
 	}

@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -30,7 +31,8 @@ public class Dining_Table extends JPanel{
 	private int radius3 = radius2 + DISTANCE_BETWEEN_PERSON_AND_CHOP;
 	private int delta = 72;
 	private int theta = -18;
-
+	JLabel hotpot = new JLabel();
+	ImageIcon img;
 	public Dining_Table(Chopsticks[] chops,Philosopher[] phils) {
 		this.setPreferredSize(new Dimension(500,350));
 		this.chops = chops;
@@ -47,14 +49,22 @@ public class Dining_Table extends JPanel{
 		/*
 		 * 画餐桌
 		 */
+		g.setColor(Color.orange);
 		g.fillOval(200, 150, 150, 150);
+		
+		img = new ImageIcon("./src/pictures/hotpot.png");
+		hotpot.setIcon(img);
+		hotpot.setBounds(263, 180, 90, 90);
+		this.add(hotpot);
 		
 		/*
 		 * 画筷子,并把哲学家安置好
 		 */
 		for(int i=0;i<5;i++) {
 			g.setColor(Color.blue);
-			
+			/*
+			 * 用到三角函数有角度地放置筷子，比较美观
+			 */
 			x1 = 275 + (int) (radius1 * Math.cos(((delta * i)+ theta*(-5)  ) * Math.PI / 180));
 			y1 = 225 + (int) (radius1 * Math.sin(((delta * i) + theta*(-5)  ) * Math.PI / 180));
 			x2 = 275 + (int) (radius2 * Math.cos(((delta * i) + theta *(-5) ) * Math.PI / 180));
@@ -74,7 +84,7 @@ public class Dining_Table extends JPanel{
 			
 			phils[i].getCurrent().paintIcon(this, g, x3 - 7, y3);
 			g.drawString("philosopher" + (i+1), x3 - 25, y3 + DISTANCE_BETWEEN_PERSON_AND_NAME);
-			System.out.println((i+1)+" philosopher"+" locate in " + (x3-5) + "," + (y3 + DISTANCE_BETWEEN_PERSON_AND_NAME));
+			//System.out.println((i+1)+" philosopher"+" locate in " + (x3-5) + "," + (y3 + DISTANCE_BETWEEN_PERSON_AND_NAME));
 		}		
 	}
 	}

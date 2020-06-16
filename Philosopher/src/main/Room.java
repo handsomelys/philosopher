@@ -16,15 +16,15 @@ public class Room {
 	private static int MAX_NUMBER_IN_PEOPLE = 4;
 	
 	public synchronized void wait_room() {
+		//System.out.println(MAX_NUMBER_IN_PEOPLE);
 		while(MAX_NUMBER_IN_PEOPLE==0) {
 			try {
 				wait();
 				System.out.println("room is full!");
 			}	catch(InterruptedException e) {
-				
 			}
-			MAX_NUMBER_IN_PEOPLE--;
 		}
+		MAX_NUMBER_IN_PEOPLE--;
 	}
 	
 	public synchronized void signal_room() {

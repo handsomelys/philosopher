@@ -22,6 +22,7 @@ public class Philosopher extends Thread {
 	private Random rand = new Random();	//随机数 吃饭和思考的时候用到
 	private int code;
 	private Room room;
+
 	public Philosopher(int id_for_philosopher,Chopsticks left,Chopsticks right,Room room) {
 		this.id_for_philosopher = id_for_philosopher;
 		this.left = left;
@@ -33,20 +34,21 @@ public class Philosopher extends Thread {
 		current = init;	
 		setStatus(Philosopher.INIT);
 		this.room = room;
+		this.speed = speed;
 	}
 	
 	public void eat() {
 			left.take(Philosopher.this);
 			right.take(Philosopher.this);
 			setStatus(Philosopher.EATING);
-			System.out.println("philosopher "+this.id_for_philosopher + " is eating");
+			//System.out.println("philosopher "+this.id_for_philosopher + " is eating");
 	}
 	
 	public void think() {
 		left.putdown();
 		right.putdown();
 		setStatus(THINKING);
-		System.out.println("philosopher "+this.id_for_philosopher + " is thinking");
+		//System.out.println("philosopher "+this.id_for_philosopher + " is thinking");
 	}
 	/** 
 	 * @Title: setStatus 
@@ -79,14 +81,14 @@ public class Philosopher extends Thread {
 		while(true) {
 			think();	//思考
 			try {
-				sleep((int)(rand.nextDouble()+0.5)*1000);	//思考的时间是随机的
+				sleep((int)(rand.nextDouble()+0.5)*2000);	//思考的时间是随机的
 			}	catch(InterruptedException e) {
 				e.printStackTrace();
 			}
 			room.wait_room();
 			eat();
 			try {
-				sleep((int)(rand.nextDouble()+0.5)*2000);
+				sleep((int)(rand.nextDouble()+0.5)*3000);
 			}	catch(InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -15,7 +15,7 @@ public class Chopsticks {
 		while(!avilable) {
 			try {
 				taker.setStatus(2);
-				System.out.println("philosopher "+ taker.getId_for_philosopher()+" is waiting");
+				//System.out.println("philosopher "+ taker.getId_for_philosopher()+" is waiting");
 				wait();
 			}	catch(InterruptedException e) {
 				
