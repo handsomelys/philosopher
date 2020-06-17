@@ -1,16 +1,50 @@
 package main;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTextArea;
-public class Philosopher extends Thread {
-	private String name;
-	private int speed;
-	private int number;
-	public String status;
-	public JTextArea jta;
 
+
+/**
+ * @author handsomelys
+ *
+ */
+public class Philosopher extends Thread implements Runnable{
+	/*
+	 * override some methods of Runnable for suspend && resume method
+	 */
+
+    /*
+     * flag for thread's resume && suspend  
+     */
+    private volatile boolean suspended;  
+
+    public void run() {
+    	try {
+    	suspended = false;
+    	run_method();	
+    	}	catch(InterruptedException e) {
+    		System.out.println("interrupte while in run_method()");
+    	}
+    	
+    }
+    
+    public void suspend_request() {
+    	suspended = true;
+    }
+    
+    public void resume_request() {
+    	suspended = false;
+    }
+    
+	private void wait_suspended()  throws InterruptedException{
+		while(suspended) {
+			Thread.sleep(800);
+		}	
+	}
+	/*
+	 *members of Philosopher
+	 */
+	private String name;
+	public String status;
 	public static final int EATING = 0;	//吃饭的表情
 	public static final int THINKING = 1;	//思考的表情
 	public static final int WAITING = 2;	//等待阻塞的表情
@@ -22,19 +56,20 @@ public class Philosopher extends Thread {
 	private Random rand = new Random();	//随机数 吃饭和思考的时候用到
 	private int code;
 	private Room room;
-
+/*
+ * Construction method of Philosopher
+ */
 	public Philosopher(int id_for_philosopher,Chopsticks left,Chopsticks right,Room room) {
 		this.id_for_philosopher = id_for_philosopher;
 		this.left = left;
 		this.right = right;
-		eating = new ImageIcon("./src/pictures/eating.png");
-		thinking = new ImageIcon("./src/pictures/thinking.png");
-		waiting = new ImageIcon("./src/pictures/waiting.png");
-		init = new ImageIcon("./src/pictures/init.png");
-		current = init;	
-		setStatus(Philosopher.INIT);
+		this.eating = new ImageIcon("./src/pictures/eating.png");
+		this.thinking = new ImageIcon("./src/pictures/thinking.png");
+		this.waiting = new ImageIcon("./src/pictures/waiting.png");
+		this.init = new ImageIcon("./src/pictures/init.png");
+		this.current = init;	
+		this.setStatus(Philosopher.INIT);
 		this.room = room;
-		this.speed = speed;
 	}
 	
 	public void eat() {
@@ -50,14 +85,7 @@ public class Philosopher extends Thread {
 		setStatus(THINKING);
 		//System.out.println("philosopher "+this.id_for_philosopher + " is thinking");
 	}
-	/** 
-	 * @Title: setStatus 
-	 * @Description: TODO 
-	 * @param @param thinking2
-	 * @return void
-	 * @throws 
-	 */  
-	
+
 	public void setStatus(int status_code) {
 		if(status_code == EATING) {
 			current = eating;
@@ -76,48 +104,39 @@ public class Philosopher extends Thread {
 			code = INIT;
 		}
 	}
-	@Override
-	public void run() {
+/*
+ * set a room which can only accommodate 4 philosophers to avoid deadlock  
+ */
+	public void run_method() throws InterruptedException{
 		while(true) {
-			think();	//思考
+			wait_suspended();	//检测是否挂起线程
+			
+			think();	
 			try {
-				sleep((int)(rand.nextDouble()+0.5)*2000);	//思考的时间是随机的
+				sleep((int)(rand.nextDouble()+0.1)*800);	//思考时长随机
 			}	catch(InterruptedException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
-			room.wait_room();
+			room.wait_room();	//wait room信号量
 			eat();
 			try {
-				sleep((int)(rand.nextDouble()+0.5)*3000);
+				sleep((int)(rand.nextDouble()+0.1)*800);	//吃饭时长随机
 			}	catch(InterruptedException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
-			room.signal_room();
+			room.signal_room();	//signal room信号量
+			wait_suspended();
 		}
 	}
-	
+	/*
+	 * a series of setters && getters
+	 */
 	public String getpName() {
 		return name;
 	}
 
 	public void setpName(String name) {
 		this.name = name;
-	}
-
-	public JTextArea getJta() {
-		return jta;
-	}
-
-	public void setJta(JTextArea jta) {
-		this.jta = jta;
-	}
-
-	public int getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
 	}
 
 	public ImageIcon getCurrent() {

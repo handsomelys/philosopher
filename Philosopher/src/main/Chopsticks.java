@@ -1,7 +1,13 @@
 package main;
 
+/**
+ * @author handsomelys
+ *
+ */
+/*
+ * class of chopsticks
+ */
 public class Chopsticks {
-
 	private boolean avilable;
 	private Philosopher taker;
 	private Philosopher owner;
@@ -10,12 +16,14 @@ public class Chopsticks {
 		avilable = true;
 	}
 	
+	/*
+	 *  equal to operation of wait Chopstick
+	 */
 	public synchronized void take(Philosopher taker) {
 		this.setTaker(taker);
 		while(!avilable) {
 			try {
 				taker.setStatus(2);
-				//System.out.println("philosopher "+ taker.getId_for_philosopher()+" is waiting");
 				wait();
 			}	catch(InterruptedException e) {
 				
@@ -26,6 +34,9 @@ public class Chopsticks {
 		table.repaint();
 	}
 	
+	/*
+	 * equal to operation of signal Chopstick
+	 */
 	public synchronized void putdown() {
 		avilable = true;
 		this.setOwner(null);

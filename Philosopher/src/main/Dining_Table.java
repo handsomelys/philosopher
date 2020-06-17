@@ -17,53 +17,75 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * @author dell
+ * @author handsomelys
  *
  */
+@SuppressWarnings("serial")
 public class Dining_Table extends JPanel{
-	Chopsticks chops[];
-	Philosopher phils[];
+	/*
+	 * members of Dining_Table
+	 */
+	private Chopsticks chops[];
+	private Philosopher phils[];
 	private int radius1 = 20;
-	private int LENGTH_OF_CHOP = 35;
+	private int LENGTH_OF_CHOP = 25;
 	private int DISTANCE_BETWEEN_PERSON_AND_CHOP = 100;
 	private int DISTANCE_BETWEEN_PERSON_AND_NAME = -12;
 	private int radius2 = radius1 + LENGTH_OF_CHOP;
 	private int radius3 = radius2 + DISTANCE_BETWEEN_PERSON_AND_CHOP;
 	private int delta = 72;
 	private int theta = -18;
-	JLabel hotpot = new JLabel();
-	ImageIcon img;
+	private JLabel hotpot = new JLabel();
+	private ImageIcon img;
+	/*
+	 * Construction method of Dining_Table
+	 */
 	public Dining_Table(Chopsticks[] chops,Philosopher[] phils) {
 		this.setPreferredSize(new Dimension(500,350));
 		this.chops = chops;
 		this.phils = phils;
 	}
-	
+	/*
+	 * override paintComponent method to draw chopsticks and philosophers
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		/*
-		 * init label
+		 * these are param of locations of chopsticks && philosophers
 		 */
 		int x1,y1,x2,y2,x3,y3;
 		/*
-		 * 画餐桌
+		 * draw the table
 		 */
-		g.setColor(Color.orange);
+		g.setColor(Color.PINK);
 		g.fillOval(200, 150, 150, 150);
-		
+		g.setColor(Color.white);
+		// Dinner plate1
+		g.fillOval(210, 195, 25, 25);
+		// Dinner plate2
+		g.fillOval(315, 195, 25, 25);
+		// Dinner plate3
+		g.fillOval(262, 150, 25, 25);
+		// Dinner plate4
+		g.fillOval(295, 265, 25, 25);
+		// Dinner plate5
+		g.fillOval(230, 265, 25, 25);
+		/*
+		 * draw hotpot~
+		 */
 		img = new ImageIcon("./src/pictures/hotpot.png");
 		hotpot.setIcon(img);
 		hotpot.setBounds(263, 180, 90, 90);
 		this.add(hotpot);
 		
 		/*
-		 * 画筷子,并把哲学家安置好
+		 * draw chopsticks && philosophers
 		 */
 		for(int i=0;i<5;i++) {
 			g.setColor(Color.blue);
 			/*
-			 * 用到三角函数有角度地放置筷子，比较美观
+			 * Use the trigonometric function to place the chopsticks at an angle, which is more beautiful
 			 */
 			x1 = 275 + (int) (radius1 * Math.cos(((delta * i)+ theta*(-5)  ) * Math.PI / 180));
 			y1 = 225 + (int) (radius1 * Math.sin(((delta * i) + theta*(-5)  ) * Math.PI / 180));
@@ -71,7 +93,9 @@ public class Dining_Table extends JPanel{
 			y2 = 225 + (int) (radius2 * Math.sin(((delta * i) + theta *(-5) ) * Math.PI / 180));
 			x3 = 275 + (int) (radius3 * Math.cos(((delta * i) + theta ) * Math.PI / 180));
 			y3 = 225 + (int) (radius3 * Math.sin(((delta * i) + theta ) * Math.PI / 180));
-			
+			/*
+			 * while philosophers is waiting, only one chopstick around him
+			 */
 			if(chops[i].getOwner() != null && phils[i].getId_for_philosopher() == chops[i].getOwner_ID()) {
 				if(chops[i].getOwner().getCode() == 2) {
 					g.drawLine(x3 + 38 , y3, x3 + 38, y3 + LENGTH_OF_CHOP);
@@ -82,7 +106,7 @@ public class Dining_Table extends JPanel{
 				g.drawLine(x1, y1, x2, y2);
 			}
 			
-			phils[i].getCurrent().paintIcon(this, g, x3 - 7, y3);
+			phils[i].getCurrent().paintIcon(this, g, x3 - 7, y3 + 10);
 			g.drawString("philosopher" + (i+1), x3 - 25, y3 + DISTANCE_BETWEEN_PERSON_AND_NAME);
 			//System.out.println((i+1)+" philosopher"+" locate in " + (x3-5) + "," + (y3 + DISTANCE_BETWEEN_PERSON_AND_NAME));
 		}		

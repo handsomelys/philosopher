@@ -8,19 +8,26 @@
  */  
 package main;
 
+import javax.swing.JLabel;
+
 /**
- * @author dell
+ * @author handsomelys
  *
+ */
+
+/*
+ * this class is used to avoid deadlock
  */
 public class Room {
 	private static int MAX_NUMBER_IN_PEOPLE = 4;
-	
+	private JLabel label;
 	public synchronized void wait_room() {
-		//System.out.println(MAX_NUMBER_IN_PEOPLE);
+		if(MAX_NUMBER_IN_PEOPLE!=0)
+		label.setText("room still has "+ MAX_NUMBER_IN_PEOPLE + "sets.");
 		while(MAX_NUMBER_IN_PEOPLE==0) {
 			try {
 				wait();
-				System.out.println("room is full!");
+				label.setText("room is full!");
 			}	catch(InterruptedException e) {
 			}
 		}
@@ -31,4 +38,14 @@ public class Room {
 		MAX_NUMBER_IN_PEOPLE++;
 		notifyAll();
 	}
+
+	public JLabel getLabel() {
+		return label;
+	}
+
+	public void setLabel(JLabel label) {
+		this.label = label;
+	}
+
+
 }
